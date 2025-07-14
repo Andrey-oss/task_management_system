@@ -1,4 +1,4 @@
-# Task_management_system
+# Task management system
 
 Task management system is a personal task-tracking web application built with Django. It allows users to create, view, update, and delete tasks with additional functionality such as encryption, image upload, deadline management, and user authentication
 
