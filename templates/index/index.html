@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome — Task Manager{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="py-5 text-center fade-in">
+  <h1 class="display-4 fw-bold mb-3">Welcome to TaskManager!</h1>
+  <p class="lead text-muted mb-4">
+    Simplify your workflow, organize tasks, and boost your productivity
+  </p>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'my_tasks' %}" class="btn btn-primary btn-lg me-3 shadow fade-in delay-1">
+      <i class="bi bi-list-check me-2"></i> View Tasks
+    </a>
+    <a href="{% url 'create_task' %}" class="btn btn-outline-primary btn-lg shadow fade-in delay-2">
+      <i class="bi bi-plus-lg me-2"></i> Create New Task
+    </a>
+  {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg me-3 shadow fade-in delay-1">
+      Log In
+    </a>
+    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg shadow fade-in delay-1">
+      Sign Up
+    </a>
+  {% endif %}
+</div>
+
+<hr class="my-5 fade-in delay-3" />
+
+<div class="row text-center g-4">
+  <div class="col-md-4 fade-in delay-1">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-body py-5">
+        <i class="bi bi-clock-history display-1 text-primary mb-4"></i>
+        <h5 class="card-title fw-semibold mb-3">Track Your Time</h5>
+        <p class="card-text text-secondary">
+          Set deadlines and never miss important dates
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 fade-in delay-2">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-body py-5">
+        <i class="bi bi-people-fill display-1 text-success mb-4"></i>
+        <h5 class="card-title fw-semibold mb-3">Collaborate Seamlessly</h5>
+        <p class="card-text text-secondary">
+          Share tasks with your team and monitor progress together
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 fade-in delay-3">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-body py-5">
+        <i class="bi bi-bar-chart-line-fill display-1 text-warning mb-4"></i>
+        <h5 class="card-title fw-semibold mb-3">Gain Insights</h5>
+        <p class="card-text text-secondary">
+          Generate reports and improve your productivity
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

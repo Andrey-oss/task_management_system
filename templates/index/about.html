@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About — Task Manager{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="py-5 fade-in">
+  <h1 class="fw-bold text-center mb-4">About TaskManager</h1>
+  <p class="lead text-center text-muted mb-5">
+    TaskManager is a lightweight and intuitive web application designed to help you
+    <span class="highlight">organize, manage, and complete</span> your daily tasks with ease
+  </p>
+
+  <div class="row g-4 mb-5">
+    <div class="col-md-6">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h5 class="mb-3"><i class="bi bi-lightning-charge-fill text-warning me-2 about-icon"></i> Fast & Lightweight</h5>
+        <p class="text-secondary">
+          Built with Django and Bootstrap, TaskManager is optimized for speed and usability with no unnecessary clutter
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h5 class="mb-3"><i class="bi bi-shield-lock-fill text-primary me-2 about-icon"></i> Secure</h5>
+        <p class="text-secondary">
+          Your tasks are stored safely with built-in user authentication and best-practice security in mind
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h5 class="mb-3"><i class="bi bi-check2-all text-success me-2 about-icon"></i> Simple Task Workflow</h5>
+        <p class="text-secondary">
+          Easily create, mark as complete, or edit tasks in just a few clicks. Keep your priorities straight and focused
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h5 class="mb-3"><i class="bi bi-stars text-info me-2 about-icon"></i> Built for You</h5>
+        <p class="text-secondary">
+          Whether you're a developer or a busy student, TaskManager helps you stay productive every single day
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+    <div class="text-center">
+      <a href="{% url 'my_tasks' %}" class="btn btn-primary btn-lg shadow">
+        <i class="bi bi-arrow-left-circle me-2"></i> Back to Tasks
+      </a>
+    </div>
+  {% endif %}
+  </div>
+{% endblock %}

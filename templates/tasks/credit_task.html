@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Task | TaskManager{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create_task.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body p-4">
+          {% if is_new %}
+            <h2 class="card-title mb-4 text-center">Create New Task</h2>
+          {% else %}
+            <h2 class="card-title mb-4 text-center">Edit exists Task</h2>
+          {% endif %}
+
+          {% if task_password %}
+            <form method="post">
+              {% csrf_token %}
+              {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+              {% endif %}
+              <div class="mb-3">
+                <label for="password" class="form-label">Enter password to view the task:</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+              </div>
+              <input type="hidden" name="encrypted" value="true">
+              <button type="submit" class="btn btn-primary">Decrypt</button>
+            </form>
+          {% else %}
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary w-100 fw-semibold">
+                {% if is_new %}
+                  <i class="bi bi-plus-lg me-2"></i> Create Task
+                {% else %}
+                  <i class="bi bi-plus-lg me-2"></i> Edit Task
+                {% endif %}
+              </button>
+            </form>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

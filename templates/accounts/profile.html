@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow rounded-4 p-4">
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <div class="bg-primary text-white rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 100px; height: 100px; font-size: 36px;">
+          {{ user.username|first|upper }}
+        </div>
+      </div>
+      <div class="col-md-9">
+        <h3 class="mb-3">Hello, {{ user.username }}!</h3>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+          <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+          <li class="list-group-item"><strong>First Name:</strong> {{ user.first_name|default:"—" }}</li>
+          <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name|default:"—" }}</li>
+          <li class="list-group-item"><strong>Date Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</li>
+          <li class="list-group-item"><strong>Last Login:</strong> {{ user.last_login|date:"F j, Y" }}</li>
+          <li class="list-group-item"><strong>Is Staff:</strong> {{ user.is_staff|yesno:"Yes,No" }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
