@@ -13,6 +13,7 @@ Task management system is a personal task-tracking web application built with Dj
 - 👤 User registration, login, and protected routes
 - 🧩 Admin interface for profile access
 - ⚙️ Some permission features (superuser can edit or read tasks from any user directly from website page, not from admin panel)
+- 🌐 DRF / REST API (basic, but it will be upgraded soon)
 
 ## ⚙️ Technologies Used
 
@@ -25,7 +26,6 @@ Task management system is a personal task-tracking web application built with Dj
 ## 🚫 Not Included (WIP)
 
 This project does **not yet include**:
-- REST API / DRF
 - Django Signals
 - Custom context processors
 - matplotlib or statistical dashboards
@@ -52,6 +52,23 @@ python manage.py runserver
 
 4. Visit [http://localhost:8000](http://localhost:8000)
 
+## 🐳 Launch by Docker
+
+1. Start the service:
+```bash
+systemctl start docker
+```
+
+2. Initialize container:
+```bash
+docker build -t tms-app .
+```
+
+3. Run the app:
+```bash
+docker run -p 8000:8000 tms-app
+```
+
 ## 📁 Folder Structure
 
 - `index/` - index pages (about, index)
@@ -70,11 +87,10 @@ Task content can be encrypted with a custom password. AES (CBC) with PKCS7 paddi
 
 ## 💡 Future Plans
 
-- RESTful API with DRF
 - Statistical dashboard with matplotlib
 - Task sharing between users
 - Signals and better permission logic
-- Docker + tests
+- Tests
 
 ---
 
