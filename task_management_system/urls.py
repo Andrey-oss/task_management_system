@@ -17,10 +17,11 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from index.views import index_view, about_view
 from tms.views import CreateTask, ReadTask, UpdateTask, DeleteTask, DisplayMyTasks
 from accounts.views import LoginView, RegisterView, profile_view, logout_view
+from api.views import MeView, TaskViewSet
 
 urlpatterns = [
     # Admin section
@@ -37,11 +38,17 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
 
     # Task section
-    path('task/create', CreateTask.as_view(), name='create_task'),
+    path('task/create/', CreateTask.as_view(), name='create_task'),
     path('task/<int:pk>/read/', ReadTask.as_view(), name='read_task'),
     path('task/<int:pk>/update/', UpdateTask.as_view(), name='update_task'),
     path('task/<int:pk>/delete/', DeleteTask.as_view(), name='delete_task'),
     path('my_tasks/', DisplayMyTasks.as_view(), name='my_tasks'),
+
+    # API Section
+
+    #path('api/', include('accounts.urls')),
+    path('api/me/', MeView.as_view(), name='me'),
+    path('api/', include("api.urls"))
 ]
 
 if settings.DEBUG:
