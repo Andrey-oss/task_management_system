@@ -64,7 +64,7 @@ urlpatterns = [
 
     path('api/', include("api.urls")),
     path('api/me/', MeView.as_view(), name='me'),
-    path('api/mytasks/', MyTasksView.as_view(), name='my_tasks'),
+    path('api/mytasks/', MyTasksView.as_view(), name='my_api_tasks'),
 
     # Admin section
     path('api/user/<int:pk>', GetUserInfo.as_view(), name='get_user_info'),
