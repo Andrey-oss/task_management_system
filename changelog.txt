@@ -1,0 +1,8 @@
+===v1.0.2===
+
+1. API support expanded (but still raw)
+2. Fixed CRITICAL bug with ability to delete someone's ask
+3. Added password hashing algorithm for better security
+4. Some changes in forms/models - Now email is required with validator and task model has related_name
+5. Added swagger info
+6. Fixed some bugs

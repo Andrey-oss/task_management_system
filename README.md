@@ -13,7 +13,8 @@ Task management system is a personal task-tracking web application built with Dj
 - 👤 User registration, login, and protected routes
 - 🧩 Admin interface for profile access
 - ⚙️ Some permission features (superuser can edit or read tasks from any user directly from website page, not from admin panel)
-- 🌐 DRF / REST API (basic, but it will be upgraded soon)
+- 🌐 DRF / REST API
+- 📄 Swagger support (but raw)
 
 ## ⚙️ Technologies Used
 
@@ -22,6 +23,8 @@ Task management system is a personal task-tracking web application built with Dj
 - Custom templates with animations
 - SQLite support
 - Python Cryptography library for encryption (currently AES)
+- Hashing password support (currently SHA256)
+- Django Rest Framework with Swagger
 
 ## 🚫 Not Included (WIP)
 
@@ -30,6 +33,7 @@ This project does **not yet include**:
 - Custom context processors
 - matplotlib or statistical dashboards
 - Advanced permissions system
+- JWT/TokenAuth (soon it will be possible)
 
 ## ▶️ Getting Started
 
@@ -78,12 +82,12 @@ docker run -p 8000:8000 tms-app
 - `static/` – static files (CSS, JS, images)
 - `media/` - media files (userspace dir)
 - `crypter/` - crypter module (for enc/decryption tasks)
+- `api/` - API section
 
 ## 🔒 Encryption
 
 Task content can be encrypted with a custom password. AES (CBC) with PKCS7 padding and base64 encoding is used under the hood via the `cryptography` library
-
-⚠️ **Currently** task password **is not encrypted**, but in the future it will be encrypted too!
+Also this app suports password hashing for better security. Uses SHA256 + PBKDF2 and base64 encoding/decoding with salt randomization, like a task encrypter 
 
 ## 💡 Future Plans
 
@@ -91,6 +95,7 @@ Task content can be encrypted with a custom password. AES (CBC) with PKCS7 paddi
 - Task sharing between users
 - Signals and better permission logic
 - Tests
+- Add JWT/TokenAuth
 
 ---
 

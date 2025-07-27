@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from tms.forms import TaskForm
 from tms.models import Task
-from crypter.handle_text import HandleText
+from crypter.crypto import TextHasher, PasswordHasher
 
 # Create your views here.
 
@@ -24,7 +24,12 @@ class CreateTask(LoginRequired, View):
             passwd = form.cleaned_data.get('password')
 
             if passwd:
-                enc = HandleText(password=passwd)
+                # Hash the pass
+                enc_pass = PasswordHasher(password=passwd).hash_password()
+                task.password = enc_pass
+
+                # Hash the task with original password
+                enc = TextHasher(password=passwd)
                 task.text = enc.encrypt(plaintext=task.text)
 
             task.save()
@@ -43,8 +48,8 @@ class ReadTask(LoginRequired, View):
         password = request.POST.get('password')
         task = get_object_or_404(Task, pk=pk)
 
-        if task.password == password:
-            dec = HandleText(password=password)
+        if PasswordHasher(password=password).verify_password(task.password):
+            dec = TextHasher(password=password)
             task.text = dec.decrypt(task.text)
             task.password = None
             return render(request, 'tasks/read_task.html', {'task': task})
@@ -78,10 +83,11 @@ class UpdateTask(LoginRequired, View):
             password = request.POST.get('password')
             encrypted = request.POST.get('encrypted') == 'true'
 
-            if task.password == password and encrypted:
-                dec = HandleText(password=password)
+            if PasswordHasher(password=password).verify_password(task.password) and encrypted:
+                dec = TextHasher(password=password)
                 task.text = dec.decrypt(task.text)
                 form = TaskForm(instance=task)
+                form.initial['password'] = password
                 return render(request, self.html_template, {
                     'form': form,
                     'is_new': False,
@@ -96,7 +102,12 @@ class UpdateTask(LoginRequired, View):
             passwd = form.cleaned_data.get('password')
 
             if passwd:
-                enc = HandleText(password=passwd)
+                # Hash the pass
+                enc_pass = PasswordHasher(password=passwd).hash_password()
+                task.password = enc_pass
+
+                # Hash the task with original password
+                enc = TextHasher(password=passwd)
                 task.text = enc.encrypt(plaintext=task.text)
 
             task.save()
@@ -110,7 +121,8 @@ class UpdateTask(LoginRequired, View):
 
 class DeleteTask(LoginRequired, View):
     def get(self, request, pk):
-        task = Task.objects.get(pk=pk)
+        task = get_object_or_404(Task, pk=pk)
+        # Fixed CRITICAL bug with ability to delete someone's else task
         return render(request, 'tasks/delete_task.html', {'task': task})
 
     def post(self, request, pk):

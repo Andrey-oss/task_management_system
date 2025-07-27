@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 
 class SkipIfAuthenticatedMixin:
+    """Check if user authenticated"""
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('index')
