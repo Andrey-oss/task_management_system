@@ -106,5 +106,5 @@ class GetUserTasks(ListAPIView):
     def get_queryset(self):
         """Query set by ID"""
 
-        pk = self.kwargs['pk']
+        pk = self.kwargs.get('pk')
         return Task.objects.filter(author_id=pk)
