@@ -14,7 +14,7 @@ class LoginView(SkipIfAuthenticatedMixin, View):
         return render(request, 'accounts/login.html', {'form': form})
 
     def post(self, request):
-        '''If there is an attempt to crawl the form through a direct POST request, we will have to reject it'''
+        """If there is an attempt to crawl the form through a direct POST request, we will have to reject it"""
 
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():

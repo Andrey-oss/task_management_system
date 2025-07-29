@@ -15,6 +15,7 @@ Task management system is a personal task-tracking web application built with Dj
 - ⚙️ Some permission features (superuser can edit or read tasks from any user directly from website page, not from admin panel)
 - 🌐 DRF / REST API
 - 📄 Swagger support (but raw)
+- 📋 Test support (for Models/API/self-written library)
 
 ## ⚙️ Technologies Used
 
@@ -25,6 +26,7 @@ Task management system is a personal task-tracking web application built with Dj
 - Python Cryptography library for encryption (currently AES)
 - Hashing password support (currently SHA256)
 - Django Rest Framework with Swagger
+- Unittest as a framework for testing
 
 ## 🚫 Not Included (WIP)
 
@@ -95,7 +97,6 @@ Also this app suports password hashing for better security. Uses SHA256 + PBKDF2
 - Statistical dashboard with matplotlib
 - Task sharing between users
 - Signals and better permission logic
-- Tests
 - Add JWT/TokenAuth
 
 ---

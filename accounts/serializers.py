@@ -1,7 +1,10 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=User.objects.all())], max_length=50)
     password = serializers.CharField(write_only=True)
 
     class Meta:

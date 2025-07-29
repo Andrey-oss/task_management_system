@@ -6,3 +6,13 @@
 4. Some changes in forms/models - Now email is required with validator and task model has related_name
 5. Added swagger info
 6. Fixed some bugs
+
+===v1.0.3===
+
+1. API support expanded (Added some admin endpoint, added ApiRegister endpoint)
+2. Added tests for models, serializers and self-written crypto library
+3. Fixed some bugs in self-written library
+4. Added some validators for UserSerializer
+5. Some swagger changes in scheme
+6. Added CI/CD Github support
+7. Some changes in Dockerfile (added tests)

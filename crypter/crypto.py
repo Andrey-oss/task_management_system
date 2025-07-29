@@ -1,10 +1,10 @@
-'''Text Enc/Decrypter
+"""Text Enc/Decrypter
 
 Salt - uses for making secure key from given password
 
 IV (Initialization Vector) - Adds entropy/randomization for encryption
 Uses in AES-CBC, must have the same size as salt
-'''
+"""
 
 import os
 import hashlib
@@ -15,7 +15,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 class PasswordHasher:
-    '''Password Encryptor'''
+    """Password Encryptor"""
 
     def __init__(self, password):
         self.iterations = 260_000
@@ -24,7 +24,7 @@ class PasswordHasher:
         self.password = password
 
     def hash_password(self) -> str:
-        '''Hash password with random salt'''
+        """Hash password with random salt"""
 
         salt = os.urandom(self.salt_length)
         hash_bytes = hashlib.pbkdf2_hmac(
@@ -36,7 +36,7 @@ class PasswordHasher:
         return f"{self.algo}${self.iterations}${base64.b64encode(salt).decode()}${base64.b64encode(hash_bytes).decode()}"
 
     def verify_password(self, hashed: str) -> bool:
-        '''Verify password'''
+        """Verify password"""
 
         try:
             algo, iterations, salt_b64, hash_b64 = hashed.split('$')
@@ -50,11 +50,11 @@ class PasswordHasher:
                 int(iterations)
             )
             return hmac.compare_digest(stored_hash, new_hash)
-        except Exception as e:
+        except Exception:
             return False
 
-class TextHasher:
-    '''AES Encryptor'''
+class CryptoText:
+    """AES Encryptor"""
 
     def __init__(self, password):
         self.iterations = 100_000
@@ -72,7 +72,13 @@ class TextHasher:
         return kdf.derive(self.password)
 
     def encrypt(self, plaintext: str) -> str:
-        '''Encrypt text'''
+        """Encrypt text"""
+
+        if not isinstance(plaintext, str):
+            return {
+                'status': 'error',
+                'message': f'Expected str, got {type(plaintext).__name__}'
+            }
 
         salt = os.urandom(16)
         key = self.derive_key(salt)
@@ -88,9 +94,22 @@ class TextHasher:
         return base64.b64encode(salt + iv + ct).decode()
 
     def decrypt(self, token: str) -> str:
-        '''Decrypt text'''
+        """Decrypt text"""
 
-        data = base64.b64decode(token)
+        try:
+            data = base64.b64decode(token)
+            if len(data) < 32:
+                # Invalid encrypted data format
+                return {
+                    'status': 'error',
+                    'message': 'Invalid encrypted data format'
+                }
+        except Exception as e:
+            return {
+                    'status': 'error',
+                    'message': e
+                }
+
         salt = data[:16] # First 16 symbols is salt
         iv = data[16:32] # Between 16 and 32 Symbols inclusive is IV
         ct = data[32:] # The rest is text
@@ -99,9 +118,22 @@ class TextHasher:
 
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
         decryptor = cipher.decryptor()
-        padded_plaintext = decryptor.update(ct) + decryptor.finalize()
+
+        try:
+            padded_plaintext = decryptor.update(ct) + decryptor.finalize()
+        except ValueError as e:
+            return {
+                    'status': 'error',
+                    'message': e
+                }
 
         unpadder = padding.PKCS7(128).unpadder()
-        plaintext = unpadder.update(padded_plaintext) + unpadder.finalize()
+        try:
+            plaintext = unpadder.update(padded_plaintext) + unpadder.finalize()
+        except ValueError as e:
+            return {
+                    'status': 'error',
+                    'message': e
+                }
 
         return plaintext.decode()

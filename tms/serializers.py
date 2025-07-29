@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from tms.models import Task
-from crypter.crypto import PasswordHasher, TextHasher
 from accounts.serializers import UserMiniSerializer
 
 class TaskSerializer(serializers.ModelSerializer):

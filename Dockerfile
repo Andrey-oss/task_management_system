@@ -31,7 +31,11 @@ EXPOSE 8000
 
 # Apply migrations
 RUN python manage.py makemigrations 
-RUN python manage.py migrate 
+RUN python manage.py migrate
+
+# Running tests
+RUN python manage.py test
+RUN python manage.py test crypter
 
 # By default: 127.0.0.1:8000
 CMD ["python", "manage.py", "runserver"]

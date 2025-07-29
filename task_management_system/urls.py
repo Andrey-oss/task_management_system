@@ -21,7 +21,7 @@ from django.urls import path, include
 from index.views import index_view, about_view
 from tms.views import CreateTask, ReadTask, UpdateTask, DeleteTask, DisplayMyTasks
 from accounts.views import LoginView, RegisterView, profile_view, logout_view
-from api.views import MeView, GetUserTasks, GetUserInfo, MyTasksView
+from api.views import MeView, GetUserTasks, GetUserInfo, MyTasksView, ApiRegisterView, GetUserList, GetTaskList
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -31,9 +31,6 @@ schema_view = get_schema_view(
       title="Task Manager API",
       default_version='v1',
       description="Task Manager API documentation and API usage",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="someemail@gmail.com"),
-      license=openapi.License(name="BSD License"),
    ),
    public=True,
    permission_classes=(IsAuthenticated,),
@@ -61,14 +58,16 @@ urlpatterns = [
     path('my_tasks/', DisplayMyTasks.as_view(), name='my_tasks'),
 
     # API Section
-
     path('api/', include("api.urls")),
-    path('api/me/', MeView.as_view(), name='me'),
-    path('api/mytasks/', MyTasksView.as_view(), name='my_api_tasks'),
+    path('api/user/register', ApiRegisterView.as_view(), name='register_via_api'),
+    path('api/user/me/', MeView.as_view(), name='me'),
+    path('api/user/mytasks/', MyTasksView.as_view(), name='my_api_tasks'),
 
     # Admin section
-    path('api/user/<int:pk>', GetUserInfo.as_view(), name='get_user_info'),
-    path('api/user/<int:pk>/tasks', GetUserTasks.as_view(), name='get_user_tasks'),
+    path('api/admin/user/<int:pk>', GetUserInfo.as_view(), name='get_user_info'),
+    path('api/admin/user/<int:pk>/tasks', GetUserTasks.as_view(), name='get_user_tasks'),
+    path('api/admin/user/list', GetUserList.as_view(), name='get_user_list'),
+    path('api/admin/task/list', GetTaskList.as_view(), name='get_task_list'),
 
     # Swagger
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

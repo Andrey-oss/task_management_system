@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from tms.forms import TaskForm
 from tms.models import Task
-from crypter.crypto import TextHasher, PasswordHasher
+from crypter.crypto import CryptoText, PasswordHasher
 
 # Create your views here.
 
@@ -29,7 +29,7 @@ class CreateTask(LoginRequired, View):
                 task.password = enc_pass
 
                 # Hash the task with original password
-                enc = TextHasher(password=passwd)
+                enc = CryptoText(password=passwd)
                 task.text = enc.encrypt(plaintext=task.text)
 
             task.save()
@@ -43,13 +43,13 @@ class ReadTask(LoginRequired, View):
         return render(request, 'tasks/read_task.html', {'task': task})
 
     def post(self, request, pk):
-        '''If task contains password, decode data and send it via GET'''
+        """If task contains password, decode data and send it via GET"""
 
         password = request.POST.get('password')
         task = get_object_or_404(Task, pk=pk)
 
         if PasswordHasher(password=password).verify_password(task.password):
-            dec = TextHasher(password=password)
+            dec = CryptoText(password=password)
             task.text = dec.decrypt(task.text)
             task.password = None
             return render(request, 'tasks/read_task.html', {'task': task})
@@ -84,7 +84,7 @@ class UpdateTask(LoginRequired, View):
             encrypted = request.POST.get('encrypted') == 'true'
 
             if PasswordHasher(password=password).verify_password(task.password) and encrypted:
-                dec = TextHasher(password=password)
+                dec = CryptoText(password=password)
                 task.text = dec.decrypt(task.text)
                 form = TaskForm(instance=task)
                 form.initial['password'] = password
@@ -107,7 +107,7 @@ class UpdateTask(LoginRequired, View):
                 task.password = enc_pass
 
                 # Hash the task with original password
-                enc = TextHasher(password=passwd)
+                enc = CryptoText(password=passwd)
                 task.text = enc.encrypt(plaintext=task.text)
 
             task.save()
