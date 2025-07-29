@@ -90,7 +90,7 @@ docker run -p 8000:8000 tms-app
 
 Task content can be encrypted with a custom password. AES (CBC) with PKCS7 padding and base64 encoding is used under the hood via the `cryptography` library
 
-Also this app suports password hashing for better security. Uses SHA256 + PBKDF2 and base64 encoding/decoding with salt randomization, like a task encrypter 
+Also this app supports password hashing for better security. Uses SHA256 + PBKDF2 and base64 encoding/decoding with salt randomization, like a task encrypter 
 
 ## 💡 Future Plans
 
